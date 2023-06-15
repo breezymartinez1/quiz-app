@@ -9,31 +9,32 @@ const contactsGet = (req, res = response) => {
 }
 
 const contactsPost = (req, res = response) => {
-    let body = req.body
-    body.id = Math.random()
-    let quiz = {
+    let {name, lastname, age, phone, id = null} = req.body
+    id = Math.round((Math.random() * 1000000))
+    let person = {
         code: new Date().getTime(),
-        question: body
+        id, name, lastname, age, phone
     }
-    constactsList.push(quiz)
+    constactsList.push(person)
 
     res.json({
-        msg: "Quiz created",
-        code: quiz.code
+        msg: "person created",
+        code: person.code
     })
 }
 
 const contactsPut = (req, res = response) => {
     let {id} = req.params
-    let {name, phone} = req.body
+    req.body
 
     for (let i = 0; i < constactsList.length; i++) {
         const contact = constactsList[i];
 
         if(contact.id == id){
-            console.log(contact.id, id)
-            contact.name = name && name
-            contact.phone = phone && phone
+           constactsList[i] = {
+            ...contact,
+            ...req.body
+           }
         }
     }
 
